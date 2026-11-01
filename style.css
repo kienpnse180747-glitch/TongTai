@@ -1,0 +1,356 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #050505;
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+  width: 100vw;
+}
+
+#game-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Nền và Hiệu ứng Zoom chậm */
+#bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  z-index: 1;
+  filter: brightness(0.6);
+  animation: kenBurns 25s ease-in-out infinite alternate;
+}
+
+@keyframes kenBurns {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  100% {
+    transform: scale(1.1) translate(-10px, -10px);
+  }
+}
+
+/* Nhân vật */
+#character-container {
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 90vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#character-image {
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.5s ease;
+}
+
+/* Khung Chat Kính mờ */
+.glass-panel {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 700px;
+  height: 40vh;
+  background: rgba(15, 15, 15, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+#chat-history {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+#chat-history::-webkit-scrollbar {
+  width: 6px;
+}
+
+#chat-history::-webkit-scrollbar-thumb {
+  background: rgba(212, 175, 55, 0.4);
+  border-radius: 10px;
+}
+
+.message {
+  padding: 12px 18px;
+  border-radius: 14px;
+  max-width: 85%;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #fff;
+  animation: fadeIn 0.4s ease;
+}
+
+.ai-message {
+  background: rgba(255, 255, 255, 0.08);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  border-left: 3px solid #D4AF37;
+}
+
+.ai-message strong {
+  color: #D4AF37;
+  display: block;
+  margin-bottom: 4px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.user-message {
+  background: #D4AF37;
+  color: #111;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  font-weight: 500;
+}
+
+/* Khu vực nhập liệu */
+#input-area {
+  display: flex;
+  padding: 16px;
+  border-top: 1px solid rgba(212, 175, 55, 0.15);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 0 0 20px 20px;
+  gap: 12px;
+}
+
+#user-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 0 16px;
+  outline: none;
+  transition: 0.3s;
+}
+
+#user-input:focus {
+  border-color: #D4AF37;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+#send-btn {
+  background: #D4AF37;
+  color: #111;
+  border: none;
+  padding: 0 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#send-btn:hover {
+  background: #E5C354;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#start-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(5, 5, 5, 0.95);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  /* Đảm bảo lớp này nổi lên trên mọi thứ */
+  cursor: pointer;
+  transition: opacity 0.6s ease;
+}
+
+.start-content {
+  text-align: center;
+  color: #D4AF37;
+  font-size: 18px;
+  font-weight: 500;
+  animation: heartBeat 1.5s infinite;
+  /* Tận dụng lại animation nhịp tim đã có */
+}
+
+/* Class dùng để ẩn màn hình bằng JavaScript */
+.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes heartBeat {
+  0% {
+    transform: scale(1);
+  }
+
+  14% {
+    transform: scale(1.15);
+  }
+
+  28% {
+    transform: scale(1);
+  }
+
+  42% {
+    transform: scale(1.15);
+  }
+
+  70% {
+    transform: scale(1);
+  }
+}
+
+
+#reset-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  background: rgba(15, 15, 15, 0.6);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  color: #D4AF37;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+#reset-btn:hover {
+  background: rgba(212, 175, 55, 0.2);
+  transform: scale(1.05);
+}
+
+
+/* Màn hình nhập tên */
+#setup-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(10, 10, 10, 0.9);
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.setup-content {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  max-width: 90%;
+  width: 400px;
+}
+
+.setup-content h2 {
+  color: #D4AF37;
+  margin-bottom: 10px;
+}
+
+.setup-content p {
+  color: #fff;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+#player-name-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  margin-bottom: 15px;
+  font-size: 16px;
+  outline: none;
+  background: rgba(255, 255, 255, 0.9);
+  color: #111;
+}
+
+#start-game-btn {
+  background: #D4AF37;
+  color: #000;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#start-game-btn:hover {
+  background: #E5C354;
+  transform: translateY(-1px);
+}
+
+/* Các nút công cụ trong khung chat */
+#input-area {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.tool-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px;
+  opacity: 0.8;
+  transition: 0.2s;
+}
+
+.tool-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}

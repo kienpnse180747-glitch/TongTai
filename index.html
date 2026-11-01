@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng Tài Sủng Thê - AI Chat</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Màn hình nhập tên người chơi -->
+    <div id="setup-screen" class="glass-panel">
+        <div class="setup-content">
+            <h2>Chào mừng em!</h2>
+            <p>Phó Tổng lưu tên em trong điện thoại là gì?</p>
+            <input type="text" id="player-name-input" placeholder="Ví dụ: Vợ yêu, Bé dâu tây..." autocomplete="off">
+            <button id="start-game-btn">Bắt Đầu Trò Chuyện</button>
+        </div>
+    </div>
+
+    <div id="game-wrapper">
+        <button id="reset-btn">🔄 Chơi lại</button>
+
+        <!-- Ảnh nền (Dùng tạm ảnh phòng khách sang trọng) -->
+        <img id="bg-image" class="scene-transition"
+            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=2075&auto=format&fit=crop"
+            alt="Background">
+
+        <!-- Ảnh nhân vật (Thay link ảnh AI bạn tạo vào src) -->
+        <div id="character-container">
+            <img id="character-image" src="images/tong-tai-bthg.jpg.jpg" alt="Character">
+        </div>
+
+        <!-- Khung Chat -->
+        <div id="chat-ui" class="glass-panel">
+            <div id="chat-history">
+                <div class="message ai-message">
+                    <strong>Phó Tổng:</strong> <span class="ai-text">Hôm nay em về muộn. Lại mải mê công việc quên cả
+                        chồng sao?</span>
+                </div>
+            </div>
+
+            <div id="input-area">
+                <!-- Nút chức năng -->
+                <button class="tool-btn" id="image-btn" title="Gửi ảnh">📷</button>
+                <button class="tool-btn" id="voice-btn" title="Gửi Voice">🎤</button>
+
+                <!-- Ô nhập liệu và Icon (Trên điện thoại mặc định có sẵn bàn phím Emoji) -->
+                <input type="text" id="user-input" placeholder="Nhắn tin cho Phó Tổng..." autocomplete="off">
+                <button id="send-btn">Gửi</button>
+
+                <!-- Input ẩn dùng để chọn file ảnh -->
+                <input type="file" id="file-upload" accept="image/*" style="display: none;">
+            </div>
+        </div>
+    </div>
+
+    <audio id="bg-music" src="bgm.mp3" loop></audio>
+    <audio id="type-sound" src="typewriter.mp3"></audio>
+    <script src="script.js"></script>
+</body>
+
+</html>
