@@ -11,13 +11,41 @@ function initSetupScreen() {
         setupScreen.classList.add("hidden");
         setupScreen.style.display = "none";
         if (setupScreen.parentNode) setupScreen.parentNode.removeChild(setupScreen);
+        return;
+    }
+
+    if (nameInput) {
+        // Hỗ trợ tối đa cho điện thoại: chạm vào là lập tức focus và bật bàn phím
+        nameInput.addEventListener("touchstart", (e) => {
+            e.stopPropagation();
+            nameInput.focus();
+        }, { passive: true });
+
+        nameInput.addEventListener("click", (e) => {
+            e.stopPropagation();
+            nameInput.focus();
+        });
+
+        nameInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                e.preventDefault();
+                if (startBtn) startBtn.click();
+            }
+        });
     }
 
     if (startBtn) {
+        let isSubmitting = false;
         const handleStart = (e) => {
-            if (e) e.preventDefault();
+            if (e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            if (isSubmitting) return;
+
             const nameVal = nameInput ? nameInput.value.trim() : "";
             if (nameVal) {
+                isSubmitting = true;
                 playerName = nameVal;
                 localStorage.setItem('playerName', playerName); // Lưu lại tên
                 
@@ -34,19 +62,15 @@ function initSetupScreen() {
                     bgMusic.play().catch(err => console.log("Lỗi phát nhạc: ", err));
                 }
             } else {
-                alert("Em hãy nhập tên để Phó Tổng biết nhé!");
+                alert("Em hãy nhập tên để Ahn Khánh Huy biết nhé!");
+                if (nameInput) nameInput.focus();
             }
         };
 
         startBtn.onclick = handleStart;
-        startBtn.addEventListener("touchend", handleStart);
-    }
-
-    if (nameInput) {
-        nameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter" && startBtn) {
-                startBtn.click();
-            }
+        startBtn.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            handleStart(e);
         });
     }
 }
@@ -125,7 +149,7 @@ function saveMemory() {
 // Hàm gọi Gemini API tích hợp bộ nhớ lịch sử, tính cách và gửi đa phương thức (Ảnh/Voice)
 async function callRealAI(userText, base64Data = null, mimeType = null) {
     const currentName = playerName || "em";
-    const systemInstruction = `Bạn là Phó Tổng, một tổng tài lạnh lùng nhưng cực kỳ sủng ái vợ (tên là ${currentName}). Người đang chat với bạn chính là ${currentName}.
+    const systemInstruction = `Bạn là Ahn Khánh Huy, một tổng tài lạnh lùng nhưng cực kỳ sủng ái vợ (tên là ${currentName}). Người đang chat với bạn chính là ${currentName}.
   Hãy trả lời tin nhắn thật ngôn tình, tự nhiên và ngắn gọn (1-2 câu). Dựa vào các câu chuyện trước đó để phản hồi hợp lý.
   BẮT BUỘC mở đầu câu trả lời bằng ĐÚNG 1 trong 4 thẻ: [BINH_THUONG], [VUI], [TUC_GIAN], hoặc [DIU_DANG].`;
 
@@ -234,7 +258,7 @@ async function handleSend() {
     // 2. Kích hoạt hiệu ứng đang trả lời
     const typingDiv = document.createElement('div');
     typingDiv.className = 'message ai-message';
-    typingDiv.innerHTML = '<strong>Phó Tổng:</strong> <em>Đang gõ...</em>';
+    typingDiv.innerHTML = '<strong>Ahn Khánh Huy:</strong> <em>Đang gõ...</em>';
     chatHistory.appendChild(typingDiv);
     scrollToBottom();
 
@@ -283,7 +307,7 @@ if (imageBtn && fileUpload) {
             const typingDiv = document.createElement('div');
             typingDiv.id = 'typing-indicator';
             typingDiv.className = 'message ai-message';
-            typingDiv.innerHTML = '<strong>Phó Tổng:</strong> <em>Đang xem ảnh...</em>';
+            typingDiv.innerHTML = '<strong>Ahn Khánh Huy:</strong> <em>Đang xem ảnh...</em>';
             chatHistory.appendChild(typingDiv);
             scrollToBottom();
 
@@ -374,7 +398,7 @@ function processAudioData() {
         const typingDiv = document.createElement('div');
         typingDiv.id = 'typing-indicator';
         typingDiv.className = 'message ai-message';
-        typingDiv.innerHTML = '<strong>Phó Tổng:</strong> <em>Đang nghe tin nhắn thoại...</em>';
+        typingDiv.innerHTML = '<strong>Ahn Khánh Huy:</strong> <em>Đang nghe tin nhắn thoại...</em>';
         chatHistory.appendChild(typingDiv);
         scrollToBottom();
 
@@ -410,7 +434,7 @@ function appendAIMessage(text) {
     div.className = 'message ai-message';
 
     const nameStrong = document.createElement('strong');
-    nameStrong.innerText = 'Phó Tổng:';
+    nameStrong.innerText = 'Ahn Khánh Huy:';
     div.appendChild(nameStrong);
 
     const textSpan = document.createElement('span');
