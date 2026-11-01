@@ -44,7 +44,7 @@ const charImg = document.getElementById('character-image');
 const bgImg = document.getElementById('bg-image');
 
 // Cấu hình Gemini API
-const API_KEY = atob("QVEuQWI4Uk42THlzNXMxbTItNTRkdFRKMUJtUlBmLTNPeFZfSHpGWUVhYVNFbHd4REtWSkE=");
+const API_KEY = "AQ.Ab8RN6Lys5s1m2-54dtTJ1BmRPf-3OxV_HzFYEaaSElwxDKVJA";
 let conversationHistory = JSON.parse(localStorage.getItem('aiMemory')) || [];
 
 // Biến quản lý thu âm tin nhắn thoại
