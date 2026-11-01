@@ -233,22 +233,26 @@ body {
 
 /* Màn hình nhập tên (Căn giữa chuẩn tuyệt đối) */
 #setup-screen {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100dvh !important;
-  background-color: rgba(5, 5, 5, 0.93) !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background-color: rgba(5, 5, 5, 0.93);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  z-index: 10000 !important;
-  display: flex !important;
-  justify-content: center !important;
-  align-items: center !important;
-  margin: 0 !important;
-  padding: 20px !important;
-  transform: none !important;
-  box-shadow: none !important;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 20px;
+  transform: none;
+  box-shadow: none;
+}
+
+#setup-screen.hidden {
+  display: none !important;
 }
 
 .setup-content {

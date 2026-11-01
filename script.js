@@ -1,23 +1,32 @@
 let playerName = localStorage.getItem('playerName') || "";
 
-document.addEventListener("DOMContentLoaded", () => {
+function initSetupScreen() {
     const setupScreen = document.getElementById("setup-screen");
     const nameInput = document.getElementById("player-name-input");
     const startBtn = document.getElementById("start-game-btn");
     const bgMusic = document.getElementById("bg-music");
 
-    // Nếu đã có tên từ lần chơi trước, ẩn luôn màn hình nhập tên
+    // Nếu đã có tên từ lần chơi trước, ẩn và gỡ bỏ màn hình nhập tên
     if (playerName && setupScreen) {
+        setupScreen.classList.add("hidden");
         setupScreen.style.display = "none";
+        if (setupScreen.parentNode) setupScreen.parentNode.removeChild(setupScreen);
     }
 
     if (startBtn) {
-        startBtn.addEventListener("click", () => {
+        const handleStart = (e) => {
+            if (e) e.preventDefault();
             const nameVal = nameInput ? nameInput.value.trim() : "";
             if (nameVal) {
                 playerName = nameVal;
                 localStorage.setItem('playerName', playerName); // Lưu lại tên
-                if (setupScreen) setupScreen.style.display = "none";
+                
+                // Ẩn và gỡ bỏ hoàn toàn màn hình nhập tên
+                if (setupScreen) {
+                    setupScreen.classList.add("hidden");
+                    setupScreen.style.display = "none";
+                    if (setupScreen.parentNode) setupScreen.parentNode.removeChild(setupScreen);
+                }
 
                 // Kích hoạt nhạc nền khi bắt đầu
                 if (bgMusic) {
@@ -27,15 +36,27 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 alert("Em hãy nhập tên để Phó Tổng biết nhé!");
             }
-        });
+        };
+
+        startBtn.onclick = handleStart;
+        startBtn.addEventListener("touchend", handleStart);
     }
 
     if (nameInput) {
         nameInput.addEventListener("keypress", (e) => {
-            if (e.key === "Enter" && startBtn) startBtn.click();
+            if (e.key === "Enter" && startBtn) {
+                startBtn.click();
+            }
         });
     }
-});
+}
+
+// Khởi chạy ngay lập tức nếu DOM đã có sẵn, hoặc khi DOMContentLoaded
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initSetupScreen);
+} else {
+    initSetupScreen();
+}
 
 const inputField = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
