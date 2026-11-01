@@ -212,27 +212,34 @@ body {
   }
 }
 
-#reset-btn {
+#top-controls {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   z-index: 100;
-  background: rgba(15, 15, 15, 0.6);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  color: #D4AF37;
-  padding: 8px 16px;
-  border-radius: 20px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
+  display: flex;
+  gap: 8px;
 }
 
-#reset-btn:hover {
-  background: rgba(212, 175, 55, 0.2);
-  transform: scale(1.05);
+#reset-btn, #api-key-btn {
+  background: rgba(15, 15, 15, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  color: #D4AF37;
+  padding: 8px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  touch-action: manipulation;
+}
+
+#reset-btn:hover, #api-key-btn:hover,
+#reset-btn:active, #api-key-btn:active {
+  background: rgba(212, 175, 55, 0.25);
+  transform: scale(1.04);
 }
 
 /* Màn hình nhập tên (Tối ưu cho cả Mobile & Desktop) */
